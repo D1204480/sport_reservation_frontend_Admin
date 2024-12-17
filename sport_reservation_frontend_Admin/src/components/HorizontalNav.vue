@@ -18,11 +18,11 @@
             <span class="nav-text">場地管理</span>
           </RouterLink>
         </li>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <RouterLink to="" class="nav-link" :class="{ 'active': isReservationActive }">
             <span class="nav-text"></span>
           </RouterLink>
-        </li>
+        </li> -->
       </ul>
     </div>
   </nav>

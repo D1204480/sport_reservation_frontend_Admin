@@ -4,7 +4,7 @@
       v-for="sport in sports" 
       :key="sport.id" 
       class="sport-item"
-      @click="goToCardView(sport)"
+      @click="goToVenueInfoView(sport)"
     >
       <img :src="sport.image" :alt="sport.alt" class="sport-image">
       <h2 class="sport-title">{{ sport.title }}</h2>
@@ -58,9 +58,9 @@ export default {
     }
   },
   methods: {
-    goToCardView(sport) {
+    goToVenueInfoView(sport) {
       this.$router.push({
-        name: 'cardInfoView',
+        name: 'venueInfo',
         params: { 
           id: sport.id,
           sportData: sport

@@ -3,6 +3,8 @@ import HomeView from '../views/HomeView.vue'
 import OrderView from '../views/OrderView.vue'
 import CrmView from '../views/CrmView.vue'
 import VenueView from '../views/VenueView.vue'
+import VenueInfoView from '../views/VenueInfoView.vue'
+
 
 
 const router = createRouter({
@@ -35,6 +37,11 @@ const router = createRouter({
       path: '/venue',
       name: 'venue',
       component: VenueView
+    },
+    {
+      path: '/venueInfo',
+      name: 'venueInfo',
+      component: VenueInfoView
     },
   ]
 })
