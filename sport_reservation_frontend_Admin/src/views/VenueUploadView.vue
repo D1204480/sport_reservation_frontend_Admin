@@ -1,55 +1,64 @@
 <template>
   <div class="venue-form">
-    <div class="upload-container" @click="triggerFileUpload">
-      <input 
-        type="file" 
-        ref="fileInput" 
-        @change="handleFileChange" 
-        accept="image/*" 
-        class="hidden"
-      >
-      <div v-if="!previewImage && !currentCourt.image" class="upload-placeholder">
-        <div class="upload-icon">📷</div>
-        <div>+ 上傳圖片</div>
+    <div class="form-layout">
+      <!-- 左側上傳區域 -->
+      <div class="upload-section">
+        <div class="upload-label">上傳圖片</div>
+        <div class="upload-container" @click="triggerFileUpload">
+          <input 
+            type="file" 
+            ref="fileInput" 
+            @change="handleFileChange" 
+            accept="image/*" 
+            class="hidden"
+          >
+          <div v-if="!previewImage && !currentCourt.image" class="upload-placeholder">
+            <div class="upload-icon">📷</div>
+            <div>點擊選擇圖片</div>
+          </div>
+          <img 
+            v-else
+            :src="previewImage || currentCourt.image" 
+            class="preview-image" 
+            alt="場地圖片"
+          >
+        </div>
       </div>
-      <img 
-        v-else
-        :src="previewImage || currentCourt.image" 
-        class="preview-image" 
-        alt="場地圖片"
-      >
-    </div>
 
-    <div class="form-group">
-      <label>場地名稱</label>
-      <input 
-        type="text" 
-        :value="currentCourt.title" 
-        readonly
-        class="form-input"
-      >
-    </div>
+      <!-- 右側表單區域 -->
+      <div class="form-section">
+        <div class="form-group">
+          <label>場地名稱</label>
+          <input 
+            type="text" 
+            :value="currentCourt.title" 
+            readonly
+            class="form-input"
+          >
+        </div>
 
-    <div class="form-group">
-      <label>營業時間</label>
-      <input 
-        type="text" 
-        v-model="formData.operatingHours" 
-        class="form-input"
-      >
-    </div>
+        <div class="form-group">
+          <label>營業時間</label>
+          <input 
+            type="text" 
+            v-model="formData.operatingHours" 
+            class="form-input"
+          >
+        </div>
 
-    <div class="form-group">
-      <label>收費標準</label>
-      <div class="price-info">
-        <div>尖峰時段：每節{{ formData.peakPrice }}元/時</div>
-        <div>離峰時段：每節{{ formData.offPeakPrice }}元/時</div>
+        <div class="form-group">
+          <label>收費標準</label>
+          <div class="price-info">
+            <div>尖峰時段：每節{{ formData.peakPrice }}元/時</div>
+            <div>離峰時段：每節{{ formData.offPeakPrice }}元/時</div>
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn-cancel" @click="handleCancel">返回</button>
+          <button class="btn-submit" @click="handleSubmit">確定新增</button>
+        </div>
       </div>
-    </div>
-
-    <div class="button-group">
-      <button class="btn-cancel" @click="handleCancel">返回</button>
-      <button class="btn-submit" @click="handleSubmit">確定新增</button>
     </div>
   </div>
 </template>
@@ -133,7 +142,6 @@ const handleCancel = () => {
   router.back()
 }
 
-// 組件卸載時清理圖片預覽的 URL
 onMounted(() => {
   return () => {
     if (previewImage.value) {
@@ -145,35 +153,53 @@ onMounted(() => {
 
 <style scoped>
 .venue-form {
-  max-width: 600px;
+  max-width: 1000px;
   margin: 20px auto;
   padding: 0 20px;
+}
+
+.form-layout {
+  display: grid;
+  grid-template-columns: 400px 1fr;
+  gap: 40px;
+  align-items: start;
+}
+
+/* 左側上傳區域 */
+.upload-section {
+  position: sticky;
+  top: 20px;
+}
+
+.upload-label {
+  font-weight: bold;
+  margin-bottom: 8px;
 }
 
 .upload-container {
   border: 2px dashed #ccc;
   background-color: #f5f5f5;
-  padding: 40px;
+  padding: 20px;
   text-align: center;
-  margin-bottom: 20px;
   border-radius: 4px;
   cursor: pointer;
-  min-height: 200px;
+  min-height: 300px;
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
 
 .upload-placeholder {
   display: flex;
   flex-direction: column;
   align-items: center;
+  color: #666;
 }
 
 .upload-icon {
   font-size: 24px;
-  color: #666;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .hidden {
@@ -182,18 +208,23 @@ onMounted(() => {
 
 .preview-image {
   max-width: 100%;
-  max-height: 200px;
+  max-height: 300px;
   border-radius: 4px;
   object-fit: contain;
 }
 
+/* 右側表單區域 */
+.form-section {
+  flex: 1;
+}
+
 .form-group {
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
 label {
   display: block;
-  margin-bottom: 5px;
+  margin-bottom: 8px;
   font-weight: bold;
 }
 
@@ -203,7 +234,6 @@ label {
   border: 1px solid #ddd;
   border-radius: 4px;
   box-sizing: border-box;
-  background-color: #f5f5f5;
 }
 
 .form-input[readonly] {
@@ -212,24 +242,33 @@ label {
 }
 
 .price-info {
-  padding: 10px;
+  padding: 15px;
   border: 1px solid #ddd;
   border-radius: 4px;
   background-color: #fff;
+}
+
+.price-info > div {
+  margin-bottom: 8px;
+}
+
+.price-info > div:last-child {
+  margin-bottom: 0;
 }
 
 .button-group {
   display: flex;
   justify-content: flex-end;
   gap: 10px;
-  margin-top: 20px;
+  margin-top: 30px;
 }
 
 button {
-  padding: 8px 20px;
+  padding: 8px 24px;
   border-radius: 4px;
   border: none;
   cursor: pointer;
+  font-size: 14px;
 }
 
 .btn-cancel {
@@ -240,5 +279,17 @@ button {
 .btn-submit {
   background-color: #333;
   color: white;
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+  .form-layout {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .upload-section {
+    position: static;
+  }
 }
 </style>
