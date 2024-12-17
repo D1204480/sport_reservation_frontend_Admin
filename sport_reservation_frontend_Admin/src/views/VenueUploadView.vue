@@ -1,67 +1,66 @@
 <template>
-  <div class="max-w-2xl mx-auto p-4">
-    <form @submit.prevent="handleSubmit" class="space-y-6">
-      <div class="space-y-4">
-        <!-- Venue Name Display -->
-        <div>
-          <label class="block text-sm font-medium mb-1">場地名稱</label>
-          <div class="p-2 bg-gray-50 rounded">{{ selectedCourt?.title || '' }}</div>
-        </div>
-
-        <!-- Image Upload -->
-        <div>
-          <div class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
-            <div v-if="!previewImage" class="flex flex-col items-center">
-              <img src="/img/upload.svg" alt="上傳圖片" class="w-12 h-12 mb-2">
-              <span class="text-gray-600">+ 上傳圖片</span>
-            </div>
-            <img v-else :src="previewImage" alt="預覽圖片" class="max-h-64 mx-auto">
-            <input type="file" @change="handleImageUpload" accept="image/*"
-              class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
-          </div>
-        </div>
-
-        <!-- Operating Hours -->
-        <div>
-          <label class="block text-sm font-medium mb-1">營業時間</label>
-          <input v-model="operatingHours" type="text" class="w-full p-2 border rounded" placeholder="06:00-22:00">
-        </div>
-
-        <!-- Pricing -->
-        <div>
-          <label class="block text-sm font-medium mb-1">收費標準</label>
-          <div class="space-y-2">
-            <div>
-              <input v-model="peakHourRate" type="text" class="w-full p-2 border rounded" placeholder="尖峰時段：每個1500元/時">
-            </div>
-            <div>
-              <input v-model="offPeakRate" type="text" class="w-full p-2 border rounded" placeholder="離峰時段：每個1000元/時">
-            </div>
-          </div>
-        </div>
+  <div class="venue-form">
+    <div class="upload-container" @click="triggerFileUpload">
+      <input 
+        type="file" 
+        ref="fileInput" 
+        @change="handleFileChange" 
+        accept="image/*" 
+        class="hidden"
+      >
+      <div v-if="!previewImage && !currentCourt.image" class="upload-placeholder">
+        <div class="upload-icon">📷</div>
+        <div>+ 上傳圖片</div>
       </div>
+      <img 
+        v-else
+        :src="previewImage || currentCourt.image" 
+        class="preview-image" 
+        alt="場地圖片"
+      >
+    </div>
 
-      <!-- Action Buttons -->
-      <div class="flex justify-between">
-        <button type="button" @click="goBack" class="px-4 py-2 border rounded">
-          返回
-        </button>
-        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded">
-          確定新增
-        </button>
+    <div class="form-group">
+      <label>場地名稱</label>
+      <input 
+        type="text" 
+        :value="currentCourt.title" 
+        readonly
+        class="form-input"
+      >
+    </div>
+
+    <div class="form-group">
+      <label>營業時間</label>
+      <input 
+        type="text" 
+        v-model="formData.operatingHours" 
+        class="form-input"
+      >
+    </div>
+
+    <div class="form-group">
+      <label>收費標準</label>
+      <div class="price-info">
+        <div>尖峰時段：每節{{ formData.peakPrice }}元/時</div>
+        <div>離峰時段：每節{{ formData.offPeakPrice }}元/時</div>
       </div>
-    </form>
+    </div>
+
+    <div class="button-group">
+      <button class="btn-cancel" @click="handleCancel">返回</button>
+      <button class="btn-submit" @click="handleSubmit">確定新增</button>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 const route = useRoute()
 const router = useRouter()
 
-// State
 const courts = ref([
   {
     id: 'A',
@@ -95,49 +94,151 @@ const courts = ref([
   }
 ])
 
-const selectedCourt = ref(null)
-const previewImage = ref(null)
-const operatingHours = ref('06:00-22:00')
-const peakHourRate = ref('尖峰時段：每個1500元/時')
-const offPeakRate = ref('離峰時段：每個1000元/時')
+const currentCourt = computed(() => {
+  return courts.value.find(court => court.id === route.params.id) || courts.value[0]
+})
 
-// Methods
-const handleImageUpload = (event) => {
+const formData = ref({
+  operatingHours: '06:00-22:00',
+  peakPrice: 1500,
+  offPeakPrice: 1000,
+})
+
+const previewImage = ref(null)
+const uploadedFile = ref(null)
+const fileInput = ref(null)
+
+const triggerFileUpload = () => {
+  fileInput.value.click()
+}
+
+const handleFileChange = (event) => {
   const file = event.target.files[0]
   if (file) {
-    const reader = new FileReader()
-    reader.onload = (e) => {
-      previewImage.value = e.target.result
-    }
-    reader.readAsDataURL(file)
+    uploadedFile.value = file
+    previewImage.value = URL.createObjectURL(file)
   }
 }
 
-const handleSubmit = async () => {
-  // Here you would typically send the data to your backend
-  const formData = {
-    courtId: selectedCourt.value?.id,
-    courtTitle: selectedCourt.value?.title,
-    image: previewImage.value,
-    operatingHours: operatingHours.value,
-    peakHourRate: peakHourRate.value,
-    offPeakRate: offPeakRate.value
-  }
-
-  console.log('Form submitted:', formData)
-  // Add your API call here
-
-  // Navigate back or to success page
-  router.push('/venues')
+const handleSubmit = () => {
+  console.log('提交表單數據:', {
+    courtId: currentCourt.value.id,
+    title: currentCourt.value.title,
+    ...formData.value,
+    image: uploadedFile.value || currentCourt.value.image
+  })
 }
 
-const goBack = () => {
+const handleCancel = () => {
   router.back()
 }
 
-// Lifecycle
+// 組件卸載時清理圖片預覽的 URL
 onMounted(() => {
-  const courtId = route.params.id
-  selectedCourt.value = courts.value.find(court => court.id === courtId)
+  return () => {
+    if (previewImage.value) {
+      URL.revokeObjectURL(previewImage.value)
+    }
+  }
 })
 </script>
+
+<style scoped>
+.venue-form {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 0 20px;
+}
+
+.upload-container {
+  border: 2px dashed #ccc;
+  background-color: #f5f5f5;
+  padding: 40px;
+  text-align: center;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.upload-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.upload-icon {
+  font-size: 24px;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.hidden {
+  display: none;
+}
+
+.preview-image {
+  max-width: 100%;
+  max-height: 200px;
+  border-radius: 4px;
+  object-fit: contain;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+  background-color: #f5f5f5;
+}
+
+.form-input[readonly] {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
+}
+
+.price-info {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #fff;
+}
+
+.button-group {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+button {
+  padding: 8px 20px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-cancel {
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+}
+
+.btn-submit {
+  background-color: #333;
+  color: white;
+}
+</style>
