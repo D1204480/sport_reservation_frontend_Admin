@@ -60,7 +60,7 @@ export default {
   methods: {
     goToVenueInfoView(sport) {
       this.$router.push({
-        name: 'venueInfo',
+        name: 'venueInfoView',
         params: { 
           id: sport.id,
           sportData: sport

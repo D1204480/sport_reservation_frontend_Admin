@@ -14,7 +14,7 @@
           </RouterLink>
         </li>
         <li class="nav-item">
-          <RouterLink to="/venue" class="nav-link" active-class="active">
+          <RouterLink to="/venue" class="nav-link" :class="{ 'active': isReservationActive }">
             <span class="nav-text">場地管理</span>
           </RouterLink>
         </li>
@@ -38,8 +38,8 @@ const route = useRoute()
 const isReservationActive = computed(() => {
   console.log('Current route path:', route.path);
   return route.path === '/reservation' ||
-    route.path.includes('/cardInfoView/') ||
-    route.path.includes('/bookingCardView')
+    route.path.includes('/venue') ||
+    route.path.includes('/venueInfo')
 })
 </script>
 

@@ -61,7 +61,7 @@ const courts = ref([
 ])
 
 const goToCourtDetail = (courtId) => {
-  router.push(`/bookingDate/${courtId}`)
+  router.push(`/venueUpload/${courtId}`)
 }
 </script>
 

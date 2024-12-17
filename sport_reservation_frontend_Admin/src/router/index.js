@@ -4,6 +4,8 @@ import OrderView from '../views/OrderView.vue'
 import CrmView from '../views/CrmView.vue'
 import VenueView from '../views/VenueView.vue'
 import VenueInfoView from '../views/VenueInfoView.vue'
+import VenueUploadView from '../views/VenueUploadView.vue'
+
 
 
 
@@ -16,32 +18,29 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue')
-    },
-    {
       path: '/order',
-      name: 'order',
+      name: 'orderView',
       component: OrderView
     },
     {
       path: '/crm',
-      name: 'crm',
+      name: 'crmView',
       component: CrmView
     },
     {
       path: '/venue',
-      name: 'venue',
+      name: 'venueView',
       component: VenueView
     },
     {
       path: '/venueInfo',
-      name: 'venueInfo',
+      name: 'venueInfoView',
       component: VenueInfoView
+    },
+    {
+      path: '/venueUpload/:id',
+      name: 'venueUploadView',
+      component: VenueUploadView
     },
   ]
 })

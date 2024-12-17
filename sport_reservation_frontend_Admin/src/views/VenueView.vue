@@ -2,7 +2,7 @@
   import SportsFacilities from '../components/SportsFacilities.vue';
 
   export default {
-    name: 'ReservationView',
+    name: 'VenueView',
     components: {
       SportsFacilities
     }
