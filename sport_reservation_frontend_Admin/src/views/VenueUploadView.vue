@@ -53,13 +53,13 @@
             <div>離峰時段：每節{{ formData.offPeakPrice }}元/時</div>
           </div>
         </div>
+      </div>
+    </div>
 
-        <div class="button-group">
+    <div class="button-group">
           <button class="btn-cancel" @click="handleCancel">返回</button>
           <button class="btn-submit" @click="handleSubmit">確定新增</button>
         </div>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -155,7 +155,7 @@ onMounted(() => {
 .venue-form {
   max-width: 1000px;
   margin: 20px auto;
-  padding: 0 20px;
+  padding: 20px;
 }
 
 .form-layout {
@@ -168,7 +168,7 @@ onMounted(() => {
 /* 左側上傳區域 */
 .upload-section {
   position: sticky;
-  top: 20px;
+  padding: 20px;
 }
 
 .upload-label {
@@ -216,6 +216,7 @@ onMounted(() => {
 /* 右側表單區域 */
 .form-section {
   flex: 1;
+  padding: 20px;
 }
 
 .form-group {
@@ -258,7 +259,7 @@ label {
 
 .button-group {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   gap: 10px;
   margin-top: 30px;
 }
@@ -272,8 +273,9 @@ button {
 }
 
 .btn-cancel {
+  padding: 8px 34px;
   background-color: #f5f5f5;
-  border: 1px solid #ddd;
+  border: 1px solid #333;
 }
 
 .btn-submit {
