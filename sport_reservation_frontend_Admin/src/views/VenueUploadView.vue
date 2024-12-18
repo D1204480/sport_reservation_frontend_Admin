@@ -136,6 +136,7 @@ const handleSubmit = () => {
     ...formData.value,
     image: uploadedFile.value || currentCourt.value.image
   })
+  router.push(`/`)
 }
 
 const handleCancel = () => {

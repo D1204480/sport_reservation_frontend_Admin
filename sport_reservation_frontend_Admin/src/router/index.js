@@ -22,11 +22,11 @@ const router = createRouter({
       name: 'orderView',
       component: OrderView
     },
-    {
-      path: '/crm',
-      name: 'crmView',
-      component: CrmView
-    },
+    // {
+    //   path: '/crm',
+    //   name: 'crmView',
+    //   component: CrmView
+    // },
     {
       path: '/venue',
       name: 'venueView',
