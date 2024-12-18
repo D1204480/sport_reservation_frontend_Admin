@@ -114,9 +114,24 @@ export default defineComponent({
   },
   data() {
     return {
-      monthlyStats: [],
-      paymentStats: [],
-      venueStats: [],
+      monthlyStats: [
+        { month: '一月', totalReservations: 150, totalRevenue: 450000 },
+        { month: '二月', totalReservations: 180, totalRevenue: 520000 },
+        { month: '三月', totalReservations: 210, totalRevenue: 630000 },
+        { month: '四月', totalReservations: 165, totalRevenue: 495000 },
+        { month: '五月', totalReservations: 195, totalRevenue: 585000 },
+        { month: '六月', totalReservations: 225, totalRevenue: 675000 }
+      ],
+      paymentStats: [
+        { paymentMethod: '信用卡', count: 450, percentage: 60 },
+        { paymentMethod: '現金', count: 300, percentage: 40 }
+      ],
+      venueStats: [
+        { venueId: 1, venueName: 'A廳', reservedTimes: 120, usageRate: 85.5 },
+        { venueId: 2, venueName: 'B廳', reservedTimes: 98, usageRate: 70.2 },
+        { venueId: 3, venueName: 'C廳', reservedTimes: 145, usageRate: 92.8 },
+        { venueId: 4, venueName: 'D廳', reservedTimes: 78, usageRate: 65.4 }
+      ],
       lineChartOptions: {
         responsive: true,
         maintainAspectRatio: false,
@@ -160,15 +175,15 @@ export default defineComponent({
           {
             label: '預訂數量',
             data: this.monthlyStats.map(stat => stat.totalReservations),
-            borderColor: /*'#2196F3'*/   '#3f3f3f',
-            backgroundColor: /*'rgba(33, 150, 243, 0.5)',*/ '#3f3f3f', 
+            borderColor: '#3f3f3f',
+            backgroundColor: '#3f3f3f',
             tension: 0.1
           },
           {
             label: '總收入',
             data: this.monthlyStats.map(stat => stat.totalRevenue),
-            borderColor: /*'#4CAF50'*/ '#c0783e',
-            backgroundColor: /*'rgba(76, 175, 80, 0.5)',*/ '#c0783e',
+            borderColor: '#c0783e',
+            backgroundColor: '#c0783e',
             tension: 0.1
           }
         ]
@@ -180,10 +195,8 @@ export default defineComponent({
         datasets: [{
           data: this.paymentStats.map(stat => stat.percentage),
           backgroundColor: [
-            /*'rgba(255, 152, 0, 0.8)'*/   '#3f3f3f',
-            /*'rgba(33, 150, 243, 0.8)',*/   '#c0783e',
-            /*'rgba(76, 175, 80, 0.8)',*/
-            /*'rgba(244, 67, 54, 0.8)'*/
+            '#3f3f3f',
+            '#c0783e'
           ]
         }]
       }
@@ -194,7 +207,7 @@ export default defineComponent({
         datasets: [{
           label: '使用率',
           data: this.venueStats.map(stat => stat.usageRate),
-          backgroundColor: /*'rgba(33, 150, 243, 0.8)'*/  '#c0783e'
+          backgroundColor: '#c0783e'
         }]
       }
     }
@@ -205,36 +218,7 @@ export default defineComponent({
         style: 'currency',
         currency: 'TWD'
       }).format(value)
-    },
-    async fetchMonthlyStats() {
-      try {
-        const response = await fetch('http://localhost:8080/api/statistics/monthly')
-        this.monthlyStats = await response.json()
-      } catch (error) {
-        console.error('Error fetching monthly stats:', error)
-      }
-    },
-    async fetchPaymentStats() {
-      try {
-        const response = await fetch('http://localhost:8080/api/statistics/payment')
-        this.paymentStats = await response.json()
-      } catch (error) {
-        console.error('Error fetching payment stats:', error)
-      }
-    },
-    async fetchVenueStats() {
-      try {
-        const response = await fetch('http://localhost:8080/api/statistics/venue')
-        this.venueStats = await response.json()
-      } catch (error) {
-        console.error('Error fetching venue stats:', error)
-      }
     }
-  },
-  mounted() {
-    this.fetchMonthlyStats()
-    this.fetchPaymentStats()
-    this.fetchVenueStats()
   }
 })
 </script>

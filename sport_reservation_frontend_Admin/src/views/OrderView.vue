@@ -161,12 +161,65 @@
 </template>
 
 <script>
-import axios from 'axios';
-
 export default {
   data() {
     return {
-      orders: [],
+      orders: [
+        {
+          orderId: "ORD001",
+          orderDate: "2024-12-18",
+          userId: "USER123",
+          status: { 
+            statusId: 1,
+            status: "已確認" 
+          },
+          reservation: {
+            reservationDate: "2024-12-20",
+            timePeriodText: "12:00-14:00",
+            applyApartment: "工程部",
+            remark: "需要素食餐點",
+            venue: {
+              venueName: "信用卡"
+            }
+          }
+        },
+        {
+          orderId: "ORD002",
+          orderDate: "2024-12-19",
+          userId: "USER456",
+          status: {
+            statusId: 7,
+            status: "已取消"
+          },
+          reservation: {
+            reservationDate: "2024-12-21",
+            timePeriodText: "18:00-20:00",
+            applyApartment: "行銷部",
+            remark: "無",
+            venue: {
+              venueName: "現金"
+            }
+          }
+        },
+        {
+          orderId: "ORD003",
+          orderDate: "2024-12-25",
+          userId: "USER789",
+          status: {
+            statusId: 1,
+            status: "已確認"
+          },
+          reservation: {
+            reservationDate: "2024-12-26",
+            timePeriodText: "11:00-13:00",
+            applyApartment: "人資部",
+            remark: "需要投影設備",
+            venue: {
+              venueName: "Line Pay"
+            }
+          }
+        }
+      ],
       orderDetails: {},
       filterDate: 'none',
       searchQuery: '',
@@ -213,46 +266,26 @@ export default {
       return date.toLocaleDateString('zh-TW');
     },
 
-    async getData() {
-      try {
-        const response = await axios.get("http://localhost:8080/api/orders");
-        this.orders = response.data;
-        console.log("Orders data:", this.orders);
-      } catch (error) {
-        console.error("Error fetching orders:", error);
-      }
-    },
-
-    async getDataByOrderId(orderId) {
-      try {
-        const response = await axios.get(`http://localhost:8080/api/orders/${orderId}`);
-        this.orderDetails = {
-          ...this.orderDetails,
-          [orderId]: response.data
-        };
-      } catch (error) {
-        console.error('Error fetching order details:', error);
-      }
+    getDataByOrderId(orderId) {
+      // Simulate getting order details
+      const orderDetail = this.orders.find(order => order.orderId === orderId);
+      this.orderDetails = {
+        ...this.orderDetails,
+        [orderId]: orderDetail
+      };
     },
 
     onSelectOrder(order) {
       this.selectedOrder = order;
     },
 
-    async deleteOrder() {
+    deleteOrder() {
       if (!this.selectedOrder) return;
-
-      try {
-        await axios.put(`http://localhost:8080/api/orders/${this.selectedOrder.orderId}/cancel`);
-        await this.getData(); // 重新取得訂單資料
-      } catch (error) {
-        console.error("Error canceling order:", error);
-      }
+      
+      // Filter out the selected order to simulate deletion
+      this.orders = this.orders.filter(order => order.orderId !== this.selectedOrder.orderId);
+      this.selectedOrder = null;
     }
-  },
-
-  created() {
-    this.getData();
   }
 };
 </script>
