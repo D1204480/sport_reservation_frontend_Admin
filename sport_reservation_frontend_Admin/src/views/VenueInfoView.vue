@@ -1,26 +1,3 @@
-<!-- <template>
-  <div>
-    <div class="pageTitle">
-      <h3>籃球場地</h3>
-    </div>
-
-    <div class="container">
-      <div class="courts-grid">
-        <div v-for="court in courts" :key="court.id" class="court-container" @click="goToCourtDetail(court.id)">
-          <div class="court">
-            <img :src="court.image" :alt="court.title">
-          </div>
-          <div class="court-title">{{ court.title }}</div>
-        </div>
-      </div>
-
-      <div class="button-group">
-        <button class="btn-cancel" @click="handleCancel">返回</button>
-      </div>
-    </div>
-  </div>
-</template> -->
-
 <template>
   <div>
     <div class="pageTitle">
