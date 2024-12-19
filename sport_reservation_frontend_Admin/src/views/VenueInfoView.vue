@@ -82,7 +82,13 @@ const filteredCourts = computed(() => {
 })
 
 const goToCourtDetail = (courtId) => {
-  router.push(`/venueUpload/${courtId}`)
+  router.push({
+    path: `/venueUpload/${courtId}`,
+    query: {
+      id: route.query.id,  // 保持運動ID
+      title: route.query.title  // 保持運動標題
+    }
+  })
 }
 
 const handleCancel = () => {
