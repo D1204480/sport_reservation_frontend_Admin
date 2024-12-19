@@ -127,10 +127,10 @@ export default defineComponent({
         { paymentMethod: '現金', count: 300, percentage: 40 }
       ],
       venueStats: [
-        { venueId: 1, venueName: 'A廳', reservedTimes: 120, usageRate: 85.5 },
-        { venueId: 2, venueName: 'B廳', reservedTimes: 98, usageRate: 70.2 },
-        { venueId: 3, venueName: 'C廳', reservedTimes: 145, usageRate: 92.8 },
-        { venueId: 4, venueName: 'D廳', reservedTimes: 78, usageRate: 65.4 }
+        { venueId: 1, venueName: '籃球A場', reservedTimes: 120, usageRate: 85.5 },
+        { venueId: 2, venueName: '排球B場', reservedTimes: 98, usageRate: 70.2 },
+        { venueId: 3, venueName: '羽球C場', reservedTimes: 145, usageRate: 92.8 },
+        { venueId: 4, venueName: '籃球D場', reservedTimes: 78, usageRate: 65.4 }
       ],
       lineChartOptions: {
         responsive: true,
