@@ -1,25 +1,24 @@
 <template>
-
+  <div>
     <div class="pageTitle">
-        <h3>籃球場地</h3>
+      <h3>籃球場地</h3>
     </div>
 
     <div class="container">
-    <div class="courts-grid">
-      <div 
-        v-for="court in courts" 
-        :key="court.id" 
-        class="court-container"
-        @click="goToCourtDetail(court.id)"
-      >
-        <div class="court">
-          <img :src="court.image" :alt="court.title">
+      <div class="courts-grid">
+        <div v-for="court in courts" :key="court.id" class="court-container" @click="goToCourtDetail(court.id)">
+          <div class="court">
+            <img :src="court.image" :alt="court.title">
+          </div>
+          <div class="court-title">{{ court.title }}</div>
         </div>
-        <div class="court-title">{{ court.title }}</div>
+      </div>
+
+      <div class="button-group">
+        <button class="btn-cancel" @click="handleCancel">返回</button>
       </div>
     </div>
   </div>
-
 </template>
 <script setup>
 import { ref } from 'vue'
@@ -63,15 +62,19 @@ const courts = ref([
 const goToCourtDetail = (courtId) => {
   router.push(`/venueUpload/${courtId}`)
 }
+
+const handleCancel = () => {
+  router.back()
+}
 </script>
 
 <style scoped>
 /* 標題 */
 .pageTitle {
-    display: flex;
-    justify-content: center;
-    text-align: center;
-    margin: 40px 0px 10px 0px;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  margin: 40px 0px 10px 0px;
 }
 
 /* 球場 */
@@ -116,6 +119,32 @@ const goToCourtDetail = (courtId) => {
   font-weight: 500;
   color: #333;
   font-size: 14px;
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 30px;
+}
+
+button {
+  padding: 8px 24px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.btn-cancel {
+  padding: 8px 34px;
+  background-color: #f5f5f5;
+  border: 1px solid #333;
+}
+
+.btn-submit {
+  background-color: #333;
+  color: white;
 }
 
 /* Responsive design */

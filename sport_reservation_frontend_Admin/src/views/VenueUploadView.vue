@@ -5,23 +5,12 @@
       <div class="upload-section">
         <div class="upload-label">上傳圖片</div>
         <div class="upload-container" @click="triggerFileUpload">
-          <input 
-            type="file" 
-            ref="fileInput" 
-            @change="handleFileChange" 
-            accept="image/*" 
-            class="hidden"
-          >
+          <input type="file" ref="fileInput" @change="handleFileChange" accept="image/*" class="hidden">
           <div v-if="!previewImage && !currentCourt.image" class="upload-placeholder">
             <div class="upload-icon">📷</div>
             <div>點擊選擇圖片</div>
           </div>
-          <img 
-            v-else
-            :src="previewImage || currentCourt.image" 
-            class="preview-image" 
-            alt="場地圖片"
-          >
+          <img v-else :src="previewImage || currentCourt.image" class="preview-image" alt="場地圖片">
         </div>
       </div>
 
@@ -29,21 +18,12 @@
       <div class="form-section">
         <div class="form-group">
           <label>場地名稱</label>
-          <input 
-            type="text" 
-            :value="currentCourt.title" 
-            readonly
-            class="form-input"
-          >
+          <input type="text" :value="currentCourt.title" readonly class="form-input">
         </div>
 
         <div class="form-group">
           <label>營業時間</label>
-          <input 
-            type="text" 
-            v-model="formData.operatingHours" 
-            class="form-input"
-          >
+          <input type="text" v-model="formData.operatingHours" class="form-input">
         </div>
 
         <div class="form-group">
@@ -57,9 +37,9 @@
     </div>
 
     <div class="button-group">
-          <button class="btn-cancel" @click="handleCancel">返回</button>
-          <button class="btn-submit" @click="handleSubmit">確定新增</button>
-        </div>
+      <button class="btn-cancel" @click="handleCancel">返回</button>
+      <button class="btn-submit" @click="handleSubmit">確定新增</button>
+    </div>
   </div>
 </template>
 
@@ -250,11 +230,11 @@ label {
   background-color: #fff;
 }
 
-.price-info > div {
+.price-info>div {
   margin-bottom: 8px;
 }
 
-.price-info > div:last-child {
+.price-info>div:last-child {
   margin-bottom: 0;
 }
 
