@@ -237,7 +237,7 @@ export default {
 
       if (this.filterDate === 'none') {
         return this.orders.filter(order => {
-          return order.userId?.toLowerCase().includes(this.searchQuery.toLowerCase());
+          return order.orderId?.toLowerCase().includes(this.searchQuery.toLowerCase());
         });
       }
 
@@ -253,7 +253,7 @@ export default {
           dateMatch = orderDate >= today && orderDate <= oneWeekLater;
         }
 
-        const searchMatch = order.userId?.toLowerCase().includes(this.searchQuery.toLowerCase());
+        const searchMatch = order.orderId?.toLowerCase().includes(this.searchQuery.toLowerCase());
         return dateMatch && searchMatch;
       });
     }
